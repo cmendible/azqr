@@ -53,7 +53,9 @@ func scan(cmd *cobra.Command, serviceScanners []azqr.IAzureScanner) {
 	debug, _ := cmd.Flags().GetBool("debug")
 	forceAzureCliCredential, _ := cmd.Flags().GetBool("azure-cli-credential")
 	filtersFile, _ := cmd.Flags().GetString("filters")
-	azqr, _ := cmd.Flags().GetBool("azqr")
+	azqrFlag, _ := cmd.Flags().GetBool("azqr")
+
+	filters := azqr.LoadFilters(filtersFile)
 
 	params := internal.ScanParams{
 		SubscriptionID:          subscriptionID,
@@ -68,8 +70,8 @@ func scan(cmd *cobra.Command, serviceScanners []azqr.IAzureScanner) {
 		Debug:                   debug,
 		ServiceScanners:         serviceScanners,
 		ForceAzureCliCredential: forceAzureCliCredential,
-		FilterFile:              filtersFile,
-		UseAzqrRecommendations:  azqr,
+		Filters:                 filters,
+		UseAzqrRecommendations:  azqrFlag,
 	}
 
 	scanner := internal.Scanner{}

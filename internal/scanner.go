@@ -38,7 +38,7 @@ type (
 		Debug                   bool
 		ServiceScanners         []azqr.IAzureScanner
 		ForceAzureCliCredential bool
-		FilterFile              string
+		Filters                 *azqr.Filters
 		UseAzqrRecommendations  bool
 		UseAprlRecommendations  bool
 	}
@@ -58,7 +58,7 @@ func (sc Scanner) Scan(params *ScanParams) {
 	outputFile := sc.generateOutputFileName(params.OutputName)
 
 	// load filters
-	filters := azqr.LoadFilters(params.FilterFile)
+	filters := params.Filters
 
 	// validate input
 	if params.SubscriptionID == "" && params.ResourceGroup != "" {
